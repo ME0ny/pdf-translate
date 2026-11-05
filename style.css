@@ -1,0 +1,567 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #e5e7eb;
+}
+
+header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 14px;
+    background: #1f2937;
+    color: #fff;
+    flex-wrap: wrap;
+}
+
+header input[type=number] {
+    width: 64px;
+    padding: 4px;
+    border-radius: 4px;
+    border: 0;
+}
+
+header .nav,
+header .right {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+header .right {
+    margin-left: auto;
+}
+
+#status {
+    font-size: 13px;
+    opacity: .85;
+}
+
+.lbl {
+    font-size: 12px;
+    opacity: .8;
+}
+
+.btn {
+    background: #2563eb;
+    color: #fff;
+    border: 0;
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn.sm {
+    padding: 5px 9px;
+    font-size: 13px;
+}
+
+.btn.gray {
+    background: #6b7280;
+}
+
+.btn.red {
+    background: #dc2626;
+}
+
+.btn.on {
+    background: #16a34a;
+}
+
+.btn:disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+}
+
+#viewer {
+    flex: 1;
+    overflow: auto;
+    padding: 20px;
+    position: relative;
+}
+
+#sidebar {
+    width: 460px;
+    background: #fff;
+    border-left: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab {
+    flex: 1;
+    padding: 11px;
+    border: 0;
+    background: #f3f4f6;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tab.active {
+    background: #fff;
+    border-bottom: 3px solid #2563eb;
+    font-weight: 600;
+}
+
+.pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.pane[hidden] {
+    display: none;
+}
+
+.tools-bar {
+    padding: 8px 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.tools-bar input[type=number] {
+    width: 62px;
+    padding: 3px;
+}
+
+.tools-bar .lbl {
+    color: #374151;
+    opacity: 1;
+}
+
+.search {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.merge {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.hint,
+#progress,
+#trLog {
+    width: 100%;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+#trLog {
+    color: #b45309;
+}
+
+.list {
+    flex: 1;
+    overflow: auto;
+    padding: 10px;
+}
+
+.item {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px;
+    margin-bottom: 8px;
+    background: #fafafa;
+}
+
+.item.active {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px #bfdbfe;
+}
+
+.item.changed {
+    border-left: 4px solid #16a34a;
+}
+
+.item.loading textarea {
+    opacity: .4;
+}
+
+.item textarea {
+    width: 100%;
+    resize: vertical;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px;
+    font: 13px/1.4 Arial;
+}
+
+.item .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.item .tools input[type=number] {
+    width: 58px;
+    padding: 2px 4px;
+}
+
+.item .tools select {
+    font-size: 12px;
+}
+
+.item button {
+    font-size: 12px;
+    padding: 3px 7px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.item button.st.on {
+    background: #1f2937;
+    color: #fff;
+}
+
+.item button.st.b {
+    font-weight: 700;
+}
+
+.item button.st.i {
+    font-style: italic;
+}
+
+.item .meta {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.item .warn {
+    color: #b45309;
+    font-size: 12px;
+    display: block;
+}
+
+.item .err {
+    color: #dc2626;
+    font-size: 12px;
+    display: block;
+}
+
+.item .tag {
+    font-size: 10px;
+    background: #fde68a;
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+.item .row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.item img.thumb {
+    max-width: 150px;
+    max-height: 100px;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+.item small {
+    color: #6b7280;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.item label {
+    font-size: 13px;
+    display: block;
+    margin-top: 4px;
+}
+
+.page {
+    position: relative;
+    margin: 0 auto 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+    background: #fff;
+    user-select: none;
+}
+
+.page-num {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    text-align: center;
+    color: #d1d5db;
+    font-size: 48px;
+}
+
+.layer {
+    position: absolute;
+    inset: 0;
+}
+
+.layer canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ov-table {
+    position: absolute;
+    z-index: 5;
+    /* Выше оригинального PDF, но ниже текста */
+    pointer-events: none;
+}
+
+.ov-table svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ov-img {
+    position: absolute;
+    pointer-events: none;
+    object-fit: contain;
+    background: #fff;
+    z-index: 2;
+}
+
+.ov-text {
+    position: absolute;
+    pointer-events: none;
+    z-index: 15;
+    /* Гарантированно выше линий таблицы и оригинала */
+    overflow: visible;
+}
+
+.ov-run {
+    position: absolute;
+    white-space: pre;
+    font-family: 'PdfEditFont', system-ui, Arial, sans-serif;
+    font-kerning: none;
+    font-variant-ligatures: none;
+    /* Добавляем легкую тень для лучшей читаемости на любом фоне */
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.hl {
+    position: absolute;
+    cursor: pointer;
+    border: 1px dashed transparent;
+}
+
+.hl.img {
+    z-index: 3;
+    border-color: rgba(245, 158, 11, .6);
+}
+
+.hl.text {
+    z-index: 4;
+}
+
+.hl.text:hover {
+    border-color: #2563eb;
+    background: rgba(37, 99, 235, .08);
+}
+
+.hl.text.cell:hover {
+    border-color: #7c3aed;
+    background: rgba(124, 58, 237, .08);
+}
+
+.hl.img:hover {
+    background: rgba(245, 158, 11, .12);
+}
+
+.hl.whole {
+    pointer-events: none;
+    border-color: transparent;
+}
+
+.hl.active {
+    z-index: 25 !important;
+    border: 2px solid #ef4444;
+    background: rgba(239, 68, 68, .08);
+    cursor: move;
+}
+
+.flash {
+    position: absolute;
+    z-index: 7;
+    border: 3px solid #7c3aed;
+    pointer-events: none;
+    animation: fl 1.5s forwards;
+}
+
+@keyframes fl {
+    to {
+        opacity: 0;
+    }
+}
+
+.handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border: 1px solid #fff;
+    z-index: 8;
+}
+
+.h-n {
+    top: -6px;
+    left: calc(50% - 5px);
+    cursor: n-resize;
+}
+
+.h-s {
+    bottom: -6px;
+    left: calc(50% - 5px);
+    cursor: s-resize;
+}
+
+.h-e {
+    right: -6px;
+    top: calc(50% - 5px);
+    cursor: e-resize;
+}
+
+.h-w {
+    left: -6px;
+    top: calc(50% - 5px);
+    cursor: w-resize;
+}
+
+.h-ne {
+    top: -6px;
+    right: -6px;
+    cursor: ne-resize;
+}
+
+.h-nw {
+    top: -6px;
+    left: -6px;
+    cursor: nw-resize;
+}
+
+.h-se {
+    bottom: -6px;
+    right: -6px;
+    cursor: se-resize;
+}
+
+.h-sw {
+    bottom: -6px;
+    left: -6px;
+    cursor: sw-resize;
+}
+
+#viewer.drawing .hl {
+    pointer-events: none;
+}
+
+#viewer.drawing .page {
+    cursor: crosshair;
+}
+
+.draw-box {
+    position: absolute;
+    border: 2px dashed #16a34a;
+    background: rgba(22, 163, 74, .1);
+    z-index: 10;
+}
+
+#modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+#modal[hidden] {
+    display: none;
+}
+
+.dialog {
+    background: #fff;
+    width: 560px;
+    max-width: 95vw;
+    max-height: 92vh;
+    overflow: auto;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.dialog h3 {
+    margin: 0 0 10px;
+}
+
+.dialog label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 9px;
+    color: #374151;
+}
+
+.dialog input,
+.dialog textarea {
+    width: 100%;
+    margin-top: 3px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font: 13px Arial;
+}
+
+.dialog .chk input {
+    width: auto;
+}
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+}
+
+.dlg-btns {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+#sMsg {
+    margin-top: 8px;
+    font-size: 12px;
+    word-break: break-word;
+}

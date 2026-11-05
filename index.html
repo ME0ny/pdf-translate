@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <label class="btn">📂 Открыть PDF<input type="file" id="pdfInput" accept="application/pdf" hidden></label>
+        <div class="nav">
+            <button class="btn gray sm" id="prevPage">◀</button>
+            <input type="number" id="pageInput" min="1" value="1"><span id="pageTotal">/ 0</span>
+            <button class="btn gray sm" id="nextPage">▶</button>
+            <select id="zoomSel">
+                <option value="1">100%</option>
+                <option value="1.4" selected>140%</option>
+                <option value="1.8">180%</option>
+                <option value="2.4">240%</option>
+            </select>
+        </div>
+        <span id="status">Загрузите PDF</span>
+        <div class="right">
+            <span class="lbl">Стр.</span>
+            <input type="number" id="saveFrom" min="1" placeholder="1">–<input type="number" id="saveTo" min="1"
+                placeholder="все">
+            <button class="btn" id="saveBtn" disabled>💾 Сохранить PDF</button>
+            <button class="btn gray" id="settingsBtn">⚙ ИИ</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="viewer"></section>
+
+        <aside id="sidebar">
+            <div class="tabs">
+                <button class="tab active" data-tab="text">Текст <span id="textCount"></span></button>
+                <button class="tab" data-tab="images">Картинки <span id="imgCount"></span></button>
+                <button class="tab" data-tab="tables">Таблицы <span id="tblCount"></span></button>
+            </div>
+
+            <div id="textPane" class="pane">
+                <div class="tools-bar">
+                    <button class="btn sm" id="trAllBtn">🌐 Весь документ</button>
+                    <button class="btn sm" id="trPageBtn">🌐 Страницу</button>
+                    <span class="lbl">с</span><input type="number" id="trFrom" min="1">
+                    <span class="lbl">по</span><input type="number" id="trTo" min="1">
+                    <button class="btn sm" id="trRangeBtn">🌐 Диапазон</button>
+                    <button class="btn sm red" id="stopBtn" hidden>■ Стоп</button>
+                    <button class="btn sm gray" id="resetTrBtn">Сбросить перевод</button>
+                    <div id="progress"></div>
+                    <div id="trLog"></div>
+                    <input id="searchInput" class="search" placeholder="🔍 Поиск по документу (Enter — следующее)">
+                </div>
+                <div id="textList" class="list"></div>
+            </div>
+
+            <div id="imagesPane" class="pane" hidden>
+                <div class="tools-bar">
+                    <button class="btn sm" id="drawBtn">✚ Выделить вручную</button>
+                    <button class="btn sm gray" id="redetectBtn">🔍 Найти заново (стр.)</button>
+                    <label class="merge">Склейка <input type="range" id="mergeRange" min="3" max="30" value="10"> <span
+                            id="mergeVal">10</span>pt</label>
+                    <div class="hint">Кликните по картинке, тяните красные маркеры. Перетаскивание внутри рамки двигает
+                        область.</div>
+                </div>
+                <div id="imgList" class="list"></div>
+            </div>
+
+            <div id="tablesPane" class="pane" hidden>
+                <div class="tools-bar">
+                    <div class="hint">Таблицы находятся по линиям. Текст в ячейках переносится внутри ячейки, линии не
+                        закрываются.</div>
+                </div>
+                <div id="tblList" class="list"></div>
+            </div>
+        </aside>
+    </main>
+
+    <div id="modal" hidden>
+        <form class="dialog" onsubmit="event.preventDefault();">
+            <h3>Настройки ИИ (routerai.ru)</h3>
+            <label>Base URL <input id="sBase" placeholder="https://routerai.ru/api/v1"></label>
+            <label>API-ключ <input id="sKey" type="password" autocomplete="off"></label><label>Модель <input id="sModel"
+                    placeholder="например openai/gpt-4o-mini"></label>
+            <label>Язык перевода <input id="sLang"></label>
+            <label>Системный промпт <textarea id="sPrompt" rows="4"></textarea></label>
+            <div class="grid2">
+                <label>Параллельных запросов <input id="sConc" type="number" min="1" max="64"></label>
+                <label>Запросов в минуту (0 = без лимита) <input id="sRpm" type="number" min="0"></label>
+                <label>Символов в запросе <input id="sChars" type="number" min="500" step="500"></label>
+                <label>Фрагментов в запросе <input id="sItems" type="number" min="1"></label>
+                <label>Повторов при ошибке <input id="sRetries" type="number" min="0" max="10"></label>
+                <label>Таймаут, сек <input id="sTimeout" type="number" min="10"></label>
+                <label>Temperature <input id="sTemp" type="number" min="0" max="2" step="0.1"></label>
+                <label class="chk"><input id="sJson" type="checkbox"> JSON-режим (response_format)</label>
+            </div>
+            <label>Не переводить (регулярное выражение) <input id="sSkip"></label>
+            <div class="dlg-btns">
+                <button class="btn gray" id="sTest">Проверить</button>
+                <button class="btn gray" id="sCancel">Отмена</button>
+                <button class="btn" id="sSave">Сохранить</button>
+            </div>
+            <div id="sMsg"></div>
+    </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/viewer.js"></script>
+    <script src="js/translate.js"></script>
+    <script src="js/save.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
